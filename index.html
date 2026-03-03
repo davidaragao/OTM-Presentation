@@ -45,15 +45,79 @@
     background: #080f1a;
     border-right: 1px solid #1a2a3d;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 24px 0 24px;
     display: flex;
     flex-direction: column;
     gap: 4px;
     scrollbar-width: thin;
     scrollbar-color: #1a2a3d transparent;
+    transition: width 0.3s cubic-bezier(0.4,0,0.2,1),
+                min-width 0.3s cubic-bezier(0.4,0,0.2,1);
+    flex-shrink: 0;
+    z-index: 200;
+  }
+  #sidebar.collapsed {
+    width: 0;
+    min-width: 0;
   }
   #sidebar::-webkit-scrollbar { width: 4px; }
   #sidebar::-webkit-scrollbar-thumb { background: #1a2a3d; border-radius: 2px; }
+
+  /* ─── SIDEBAR TOGGLE BUTTON ─────────────────────────────────────────────── */
+  #sidebar-toggle {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 300;
+    background: rgba(11,24,41,0.85);
+    border: 1px solid #1a2a3d;
+    color: var(--gray);
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  #sidebar-toggle:hover { background: rgba(26,140,204,0.2); color: var(--bright); }
+  #sidebar-toggle .bar {
+    width: 16px; height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    transition: transform 0.25s, opacity 0.25s;
+    display: block;
+  }
+
+  /* ─── SIDEBAR BACKDROP (mobile only) ───────────────────────────────────── */
+  #sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 150;
+  }
+  #sidebar-backdrop.visible { display: block; }
+
+  /* ─── RESPONSIVE: auto-collapse below 640 px ────────────────────────────── */
+  @media (max-width: 640px) {
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      /* starts collapsed on small screens */
+    }
+    #sidebar.collapsed {
+      width: 0;
+      min-width: 0;
+    }
+    #sidebar:not(.collapsed) {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+    }
+    #stage { width: 100% !important; }
+  }
 
   .sidebar-logo {
     padding: 0 18px 18px;
@@ -415,8 +479,16 @@
     <!-- chapter buttons injected by JS -->
   </nav>
 
+  <!-- ════ SIDEBAR BACKDROP ════ -->
+  <div id="sidebar-backdrop"></div>
+
   <!-- ════ STAGE ════ -->
   <div id="stage">
+    <button id="sidebar-toggle" title="Toggle menu" aria-label="Toggle sidebar">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
     <div id="counter"><span id="cur">1</span> / <span id="tot">1</span></div>
 
     <!-- ══════════════════════════════════════════════════════════
@@ -1471,9 +1543,42 @@
 //  SLIDE ENGINE
 // ════════════════════════════════════════════════════════
 
-const slides  = Array.from(document.querySelectorAll('.slide'));
-const sidebar = document.getElementById('sidebar');
-let current   = 0;
+const slides   = Array.from(document.querySelectorAll('.slide'));
+const sidebar  = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebar-backdrop');
+const toggle   = document.getElementById('sidebar-toggle');
+let current    = 0;
+
+// ── Sidebar collapse logic
+const MOBILE_BP = 640;
+
+function isMobile() { return window.innerWidth <= MOBILE_BP; }
+
+function setSidebar(collapsed) {
+  sidebar.classList.toggle('collapsed', collapsed);
+  backdrop.classList.toggle('visible', !collapsed && isMobile());
+}
+
+// Auto-collapse on small screens on load
+if (isMobile()) setSidebar(true);
+
+toggle.addEventListener('click', e => {
+  e.stopPropagation();
+  setSidebar(!sidebar.classList.contains('collapsed'));
+});
+
+backdrop.addEventListener('click', () => setSidebar(true));
+
+// Re-evaluate on resize
+window.addEventListener('resize', () => {
+  if (!isMobile() && backdrop.classList.contains('visible')) {
+    backdrop.classList.remove('visible');
+  }
+  if (isMobile() && !sidebar.classList.contains('collapsed')) {
+    // keep open if user deliberately opened it — just hide backdrop ref
+    backdrop.classList.add('visible');
+  }
+});
 
 // ── Extract chapters
 const chapters = [];
@@ -1489,7 +1594,10 @@ chapters.forEach((ch, ci) => {
   const btn = document.createElement('button');
   btn.className = 'chapter-btn';
   btn.innerHTML = `<span class="chapter-num">${ci + 1}</span>${ch.name}`;
-  btn.addEventListener('click', () => goTo(ch.firstSlide));
+  btn.addEventListener('click', () => {
+    goTo(ch.firstSlide);
+    if (isMobile()) setSidebar(true);
+  });
   sidebar.appendChild(btn);
   ch.btn = btn;
 });
