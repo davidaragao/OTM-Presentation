@@ -1198,7 +1198,7 @@
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:940px; width:100%">
         <div class="chip red">O Que as Planilhas Não Conseguem Fazer</div>
-        <div class="grid-3 anim anim-d2" style="gap:14px">
+        <div class="grid-2 anim anim-d2" style="gap:14px">
           <div class="card red-border flex-col gap-8">
             <div class="t-medium red" style="font-size:13px">✗ Trilha de auditoria jurídica</div>
             <div class="t-sub">Sem log imutável de quem verificou o quê e quando. A seguradora pode recusar a indenização.</div>
@@ -1208,16 +1208,8 @@
             <div class="t-sub">CNH vencida? RNTRC suspenso? A planilha não avisa. O motorista sai em operação.</div>
           </div>
           <div class="card red-border flex-col gap-8">
-            <div class="t-medium red" style="font-size:13px">✗ Integração com APIs governamentais</div>
+            <div class="t-medium red" style="font-size:13px">✗ Integração com APIs</div>
             <div class="t-sub">SERPRO, SENATRAN, SINESP, seguradora — nenhuma dessas bases é consultada automaticamente.</div>
-          </div>
-          <div class="card red-border flex-col gap-8">
-            <div class="t-medium red" style="font-size:13px">✗ Análise de risco em tempo real</div>
-            <div class="t-sub">Não há score de risco por motorista, veículo ou proprietário. Tudo é manual e subjetivo.</div>
-          </div>
-          <div class="card red-border flex-col gap-8">
-            <div class="t-medium red" style="font-size:13px">✗ Prova de due diligence</div>
-            <div class="t-sub">Sem documento que prove que a verificação foi feita antes da viagem, no momento certo.</div>
           </div>
           <div class="card red-border flex-col gap-8">
             <div class="t-medium red" style="font-size:13px">✗ Monitoramento contínuo</div>
@@ -1255,7 +1247,7 @@
             <div class="t-medium blue" style="font-size:14px; margin-bottom:4px">🛡 Novo Projeto — Software</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Aplicação web própria e customizada</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Banco de dados relacional próprio — infra de dados robusta</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Múltiplos usuários com níveis de acesso (admin / operador)</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Múltiplos usuários com níveis de acesso (admin / Operação / Cadastro)</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Análise de risco via API da seguradora</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Possibilidade de intragrar novas APIs</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Trilha de auditoria imutável com data e hora</div>
@@ -1317,13 +1309,13 @@
         <div class="chip blue">O Que Fica Por Baixo</div>
         <div class="t-large white center">O usuário vê <span class="blue">uma tela limpa.</span><br>O que a sustenta é o projeto real.</div>
         <div class="grid-2 anim anim-d2" style="align-items:start">
-          <div class="card top-blue flex-col gap-10" style="padding:24px">
+          <div class="card top-blue flex-col gap-10" style="padding:24px; align-items:flex-start; text-align:left">
             <div class="t-medium blue" style="font-size:14px; margin-bottom:6px">👁 O que o usuário vê</div>
             <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Dashboard de motoristas, veículos, proprietários</div>
             <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Alertas automáticos de vencimento</div>
             <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Relatório de conformidade da operação</div>
           </div>
-          <div class="card top-amber flex-col gap-8" style="padding:24px">
+          <div class="card top-amber flex-col gap-8" style="padding:24px; align-items:flex-start; text-align:left">
             <div class="t-medium amber" style="font-size:14px; margin-bottom:6px">⚙️ O que sustenta por baixo</div>
             <div class="t-sub" style="font-size:14px">🔐 Autenticação segura e gestão de sessões</div>
             <div class="t-sub" style="font-size:14px">👥 Hierarquia de permissões (admin / operador / auditor)</div>
