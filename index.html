@@ -449,8 +449,8 @@
   .cmp-table { width: 100%; }
   .cmp-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #1a2a3d; }
   .cmp-row.header { background: transparent; }
-  .cmp-cell { background: var(--card); padding: 11px 16px; font-size: 13px; }
-  .cmp-row.header .cmp-cell { background: transparent; font-size: 11px; font-weight: 700;
+  .cmp-cell { background: var(--card); padding: 13px 18px; font-size: 16px; }
+  .cmp-row.header .cmp-cell { background: transparent; font-size: 13px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase; color: var(--gray); padding-bottom: 8px; }
   .cmp-cell.bad  { color: var(--red-lt); }
   .cmp-cell.good { color: var(--green-lt); font-weight: 600; }
@@ -466,6 +466,19 @@
     transform: translate(-50%, -50%); width: 500px; height: 500px;
     pointer-events: none; z-index: 0; }
   .slide > *:not(.shield-svg) { position: relative; z-index: 1; }
+
+  /* ─── EVENT TABLE ──────────────────────────────────────────────────────── */
+  .event-table { width: 100%; border-collapse: collapse; }
+  .event-table thead tr { border-bottom: 1px solid var(--border); }
+  .event-table th { padding: 8px 14px; font-family: var(--font-head); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); text-align: left; }
+  .event-table td { padding: 9px 14px; font-family: var(--font-body); font-size: 13px; border-bottom: 1px solid var(--border); }
+  .event-table td:last-child { text-align: right; font-family: var(--font-head); font-weight: 700; }
+  .event-table tr:last-child td { border-bottom: none; }
+  .event-table tr:nth-child(odd) td { background: rgba(15,29,46,0.5); }
+
+  /* ─── STEP BOX ─────────────────────────────────────────────────────────── */
+  .step-box { background: var(--card); border-radius: 12px; padding: 18px 22px; border: 1px solid var(--border); width: 100%; }
+  .step-num { font-family: var(--font-head); font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -927,19 +940,16 @@
           <div class="card blue-border flex-col gap-10">
             <div class="t-medium blue" style="font-size:15px">🔍 Cadastro & Vetting</div>
             <div class="timeline" style="gap:6px">
-              <div class="t-sub">✓ Validação CPF/CNPJ via Serpro Datavalid (99,9%)</div>
-              <div class="t-sub">✓ OCR automático CNH e CRLV</div>
-              <div class="t-sub">✓ Reconhecimento facial + prova de vida</div>
-              <div class="t-sub">✓ Consulta SINESP (veículos roubados)</div>
+              <div class="t-sub">✓ OCR automático Residência, CNH, CRLV, CNPJ</div>
+              <div class="t-sub">✓ Alerta de documentos inválidos</div>
+              <div class="t-sub">✓ Data de expiração dos documentos</div>
             </div>
           </div>
           <div class="card blue-border flex-col gap-10">
             <div class="t-medium blue" style="font-size:15px">🔄 Monitoramento Contínuo</div>
             <div class="timeline" style="gap:6px">
-              <div class="t-sub">✓ Alertas automáticos de vencimento</div>
-              <div class="t-sub">✓ Verificação antes de <strong>cada viagem</strong></div>
-              <div class="t-sub">✓ Consulta SENATRAN em tempo real</div>
-              <div class="t-sub">✓ Status RNTRC e seguros ativos</div>
+              <div class="t-sub">✓ Alertas de vencimento de documentos</div>
+              <div class="t-sub">✓ Alertas de vencimento das análises de risco</div>
             </div>
           </div>
           <div class="card amber-border flex-col gap-10">
@@ -948,14 +958,12 @@
               <div class="t-sub">✓ Veículo OTM → análise do motorista</div>
               <div class="t-sub">✓ Veículo próprio → + análise do veículo</div>
               <div class="t-sub">✓ Veículo de 3º → + análise do proprietário</div>
-              <div class="t-sub">✓ Score de risco por operação</div>
             </div>
           </div>
           <div class="card green-border flex-col gap-10">
             <div class="t-medium green" style="font-size:15px">⚖️ Blindagem Jurídica</div>
             <div class="timeline" style="gap:6px">
               <div class="t-sub">✓ Trilha de auditoria imutável</div>
-              <div class="t-sub">✓ Evidência de due diligence para seguradoras</div>
               <div class="t-sub">✓ Documentação para defesa judicial</div>
               <div class="t-sub">✓ Relatórios para fiscalização ANTT</div>
             </div>
@@ -977,7 +985,7 @@
           <div class="cmp-row">
             <div class="cmp-cell gray">Verificação documental</div>
             <div class="cmp-cell bad">No cadastro inicial</div>
-            <div class="cmp-cell good">Antes de cada viagem</div>
+            <div class="cmp-cell good">Periodicamente</div>
           </div>
           <div class="cmp-row">
             <div class="cmp-cell gray">Janela de risco</div>
@@ -1062,105 +1070,83 @@
 
     <!-- SLIDE 23: title ROI -->
     <div class="slide bg-amber" data-chapter="O Cálculo do ROI">
-      <div class="flex-col gap-16 center anim anim-d1" style="max-width:720px">
+      <div class="flex-col gap-16 center anim anim-d1" style="max-width:740px">
         <div class="chip amber">O Cálculo do ROI</div>
-        <div class="t-large white">Para uma frota de</div>
-        <div class="t-giant amber">100</div>
-        <div class="t-large white">veículos.</div>
+        <div class="t-huge white">A pergunta simples<br>que encerra<br><span class="amber">o debate.</span></div>
       </div>
     </div>
 
-    <!-- SLIDE 24: perdas evitadas -->
+    <!-- SLIDE 24: event cost table -->
     <div class="slide" data-chapter="O Cálculo do ROI">
-      <div class="flex-col gap-20 anim anim-d1" style="max-width:860px; width:100%; align-items:center">
-        <div class="chip amber">Perdas Evitadas por Ano — 100 veículos</div>
-        <div class="card anim anim-d2" style="padding: 0; overflow:hidden; width:100%">
-          <table class="roi-table">
-            <tr><td>Prevenção de roubos (−32%)</td><td>R$ 200k – R$ 500k</td></tr>
-            <tr><td>Proteção da apólice securitária</td><td>R$ 300k – R$ 1 mi</td></tr>
-            <tr><td>Redução de multas ANTT</td><td>R$ 50k – R$ 200k</td></tr>
-            <tr><td>Redução de acidentes</td><td>R$ 200k – R$ 500k</td></tr>
-            <tr><td>Redução de passivo trabalhista</td><td>R$ 100k – R$ 300k</td></tr>
-            <tr><td>Eficiência operacional</td><td>R$ 100k – R$ 200k</td></tr>
-            <tr style="background:#1a2a3d">
-              <td style="font-weight:700; color:var(--white); font-size:16px">TOTAL EVITADO / ANO</td>
-              <td style="font-size:20px; color: var(--amber-lt);">R$ 950k – R$ 2,7 mi</td>
-            </tr>
-          </table>
+      <div class="flex-col gap-16 anim anim-d1" style="max-width:900px; width:100%">
+        <div class="chip red">Qual desses eventos você está disposto a absorver sem proteção?</div>
+        <div class="t-sub gray anim anim-d2">Cada um deles, individualmente, custa mais do que um ano do sistema. Fontes verificadas e públicas.</div>
+        <table class="event-table anim anim-d3">
+          <thead><tr><th>Evento</th><th>Custo documentado</th><th>Fonte</th></tr></thead>
+          <tbody>
+            <tr><td>Acidente médio em rodovia — sem cobertura securitária</td><td class="amber" style="font-family:var(--font-head)">R$ 261.689</td><td class="t-source">IPEA / TD 2565</td></tr>
+            <tr><td><strong class="white">Acidente com fatalidade — sem cobertura securitária</strong></td><td class="red" style="font-family:var(--font-head);font-weight:800">R$ 664.821</td><td class="t-source">IPEA / PRF 2025</td></tr>
+            <tr><td>Roubo de carga — valor médio por ocorrência 2024</td><td class="amber" style="font-family:var(--font-head)">R$ 116.000</td><td class="t-source">NTC (R$1,217bi ÷ 10.478)</td></tr>
+            <tr><td>Multa máxima eSocial S-2240 — por infração</td><td class="red" style="font-family:var(--font-head)">R$ 336.841</td><td class="t-source">Portaria MTE 1.131/2025</td></tr>
+            <tr><td>Condenação trabalhista — caso EMTRAM (TST)</td><td class="red" style="font-family:var(--font-head)">R$ 570.000 + pensão</td><td class="t-source">TST — processo público</td></tr>
+            <tr><td>Operação fraudulenta com carga — caso SP 2024</td><td class="amber" style="font-family:var(--font-head)">R$ 10.000.000</td><td class="t-source">Op. Carga Fantasma</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 25: A Conta Mais Simples do Mundo -->
+    <div class="slide" data-chapter="O Cálculo do ROI">
+      <div class="flex-col gap-20 center anim anim-d1" style="max-width:860px; width:100%">
+        <div class="chip amber">A Conta Mais Simples do Mundo</div>
+        <div class="t-large white anim anim-d2">O sistema custa <span class="blue">menos</span><br>do que qualquer evento<br>dessa tabela.</div>
+        <div class="grid-3 anim anim-d3" style="width:100%">
+          <div class="card top-red flex-col gap-10 center">
+            <div class="t-sub gray">Menor sinistro grave</div>
+            <div class="t-large red">R$ 116.000</div>
+            <div class="t-sub">Roubo de carga — valor médio</div>
+            <div class="t-source">NTC&Logística 2024</div>
+          </div>
+          <div class="card top-red flex-col gap-10 center" style="border-top-color:var(--red-lt); background:#140a0a">
+            <div class="t-sub gray">Sinistro mais frequente</div>
+            <div class="t-large red" style="font-size:clamp(22px,3.2vw,44px)">R$ 261.689</div>
+            <div class="t-sub">Acidente médio sem cobertura</div>
+            <div class="t-source">IPEA — TD 2565</div>
+          </div>
+          <div class="card top-red flex-col gap-10 center" style="border-top-color:var(--red-lt); background:#180909">
+            <div class="t-sub gray">Sinistro mais grave</div>
+            <div class="t-large red" style="font-size:clamp(20px,3vw,40px)">R$ 664.821</div>
+            <div class="t-sub">Acidente fatal sem cobertura</div>
+            <div class="t-source">IPEA — TD 2565</div>
+          </div>
+        </div>
+        <div class="highlight-box blue anim anim-d4">
+          Qualquer um desses eventos, isoladamente, já justifica o investimento — independentemente do tamanho da sua frota. A pergunta não é quanto custa o sistema. É <strong>qual desses você está disposto a absorver sem proteção.</strong>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 25: investimento vs retorno -->
+    <!-- SLIDE 26: insurance multiplier -->
     <div class="slide" data-chapter="O Cálculo do ROI">
-      <div class="flex-col gap-20 anim anim-d1 center" style="max-width:900px; width:100%">
-        <div class="chip amber">Investimento × Retorno</div>
-        <div class="vs-wrap anim anim-d2">
-          <div class="card top-blue flex-col gap-12 center">
-            <div class="t-sub gray">Investimento anual</div>
-            <div class="t-large blue">R$ 192k – R$ 600k</div>
-            <div class="t-sub">= 1 a 2 pneus de caminhão por mês</div>
-            <div class="t-sub gray" style="font-size:11px">para proteger 100 veículos</div>
+      <div class="flex-col gap-20 anim anim-d1" style="max-width:900px; width:100%">
+        <div class="chip green">O Fator Multiplicador: A Apólice</div>
+        <div class="t-large white center anim anim-d2">O benefício mais valioso<br>que nenhuma planilha captura.</div>
+        <div class="vs-wrap anim anim-d3">
+          <div class="card top-red flex-col gap-10 center">
+            <div class="t-sub gray">Sem compliance documentado</div>
+            <div class="t-medium red">Você paga o prêmio</div>
+            <div class="t-sub">A seguradora pode recusar indenizar — mesmo em roubo armado.</div>
+            <div class="t-sub" style="font-size:11px">(STJ REsp 2.063.143/SC)</div>
           </div>
           <div class="vs-center">VS</div>
-          <div class="card top-amber flex-col gap-12 center">
-            <div class="t-sub gray">Perdas evitadas</div>
-            <div class="t-large amber">R$ 950k – R$ 2,7 mi</div>
-            <div class="t-sub">por ano</div>
-            <div class="t-sub gray" style="font-size:11px">dados setoriais NTC / nstech</div>
+          <div class="card top-green flex-col gap-10 center">
+            <div class="t-sub gray">Com trilha de auditoria</div>
+            <div class="t-medium green">A apólice é honrada</div>
+            <div class="t-sub">O log de verificação pré-viagem é a evidência que garante o pagamento da indenização.</div>
           </div>
         </div>
-        <div class="grid-3 anim anim-d3" style="max-width:760px; margin:0 auto">
-          <div class="card top-green flex-col gap-6 center">
-            <div class="t-medium green">158% – 1.306%</div>
-            <div class="t-sub">ROI</div>
-          </div>
-          <div class="card top-green flex-col gap-6 center">
-            <div class="t-medium green">1 – 4 meses</div>
-            <div class="t-sub">Payback</div>
-          </div>
-          <div class="card top-amber flex-col gap-6 center">
-            <div class="t-medium amber">R$ 2,58 – R$ 14</div>
-            <div class="t-sub">por R$ 1 investido</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 26: 1 sinistro já paga -->
-    <div class="slide" data-chapter="O Cálculo do ROI">
-      <div class="flex-col gap-20 anim anim-d1 center" style="max-width:860px; width:100%">
-        <div class="chip red">O Custo de 1 Único Sinistro</div>
-        <div class="t-medium gray anim anim-d2">Qualquer um desses eventos custa mais do que um ano do sistema.</div>
-        <div class="grid-3 anim anim-d3">
-          <div class="card top-red flex-col gap-8 center">
-            <div class="t-medium red">R$ 261 mil</div>
-            <div class="t-sub">Acidente médio sem cobertura</div>
-          </div>
-          <div class="card top-red flex-col gap-8 center">
-            <div class="t-medium red">R$ 664 mil</div>
-            <div class="t-sub">Acidente com fatalidade</div>
-          </div>
-          <div class="card top-amber flex-col gap-8 center">
-            <div class="t-medium amber">R$ 336 mil</div>
-            <div class="t-sub">Multa máxima eSocial S-2240</div>
-          </div>
-          <div class="card top-red flex-col gap-8 center">
-            <div class="t-medium red">R$ 570 mil+</div>
-            <div class="t-sub">Condenação trabalhista + pensão</div>
-          </div>
-          <div class="card top-amber flex-col gap-8 center">
-            <div class="t-medium amber">R$ 116 mil</div>
-            <div class="t-sub">Roubo de carga (valor médio)</div>
-          </div>
-          <div class="card top-red flex-col gap-8 center">
-            <div class="t-medium red">R$ 10 mi</div>
-            <div class="t-sub">Operação fraudulenta (caso real)</div>
-          </div>
-        </div>
-        <div class="highlight-box red anim anim-d4">
-          Um único acidente fatal sem cobertura securitária: <strong>R$ 664 mil</strong> — 
-          paga 1 a 3 anos do sistema completo.
+        <div class="highlight-box green anim anim-d4">
+          Você já paga os prêmios de seguro esperando que a apólice funcione quando precisar. Um único sinistro coberto graças à trilha de auditoria — em vez de negado por descumprimento de PGR — paga <strong>vários anos do sistema</strong>. Isso não é projeção — é o mecanismo exato pelo qual o sistema se paga.
         </div>
       </div>
     </div>
@@ -1169,7 +1155,7 @@
          CAPÍTULO 10 — O SISTEMA PARA VOCÊ
     ══════════════════════════════════════════════════════════════ -->
 
-    <!-- SLIDE N1: title -->
+    <!-- SLIDE 27: title -->
     <div class="slide bg-blue" data-chapter="O Sistema para Você">
       <div class="flex-col gap-16 center anim anim-d1" style="max-width:720px">
         <div class="chip blue">O Sistema para Você</div>
@@ -1180,7 +1166,7 @@
       </div>
     </div>
 
-    <!-- SLIDE N2: Como o compliance é gerenciado hoje -->
+    <!-- SLIDE 28: Como o compliance é gerenciado hoje -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:920px; width:100%">
         <div class="chip amber">O Estado Atual</div>
@@ -1208,7 +1194,7 @@
       </div>
     </div>
 
-    <!-- SLIDE N3: O que as planilhas não conseguem fazer -->
+    <!-- SLIDE 29: O que as planilhas não conseguem fazer -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:940px; width:100%">
         <div class="chip red">O Que as Planilhas Não Conseguem Fazer</div>
@@ -1244,7 +1230,7 @@
       </div>
     </div>
 
-    <!-- SLIDE N4: Automação vs. Software -->
+    <!-- SLIDE 30: Automação vs. Software -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-16 anim anim-d1" style="max-width:920px; width:100%">
         <div class="chip blue">Automação ≠ Software</div>
@@ -1253,13 +1239,12 @@
           <div class="card top-amber flex-col gap-8" style="padding:24px">
             <div class="t-medium amber" style="font-size:14px; margin-bottom:4px">⚡ Projeto Anterior — Automação</div>
             <div class="t-sub" style="font-size:14px">✓ Fluxo entre ferramentas existentes ( Forms + OCR IA + Sheets)</div>
-            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Dados vivem no Google — não são seus</div>
+            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Dados continuam separados no Google</div>
+            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem ambiente integrado para os times</div>
             <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem banco de dados próprio</div>
-            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem autenticação de usuários</div>
-            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem controle de permissões por nível de acesso</div>
-            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem APIs governamentais (SERPRO, SENATRAN)</div>
+            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem controle de permissões por nível de acesso adequado</div>
+            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem integração com APIs</div>
             <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem trilha de auditoria jurídica</div>
-            <div class="t-sub" style="font-size:14px; color:var(--red-lt)">✗ Sem infraestrutura de uptime sob sua responsabilidade</div>
             <div style="border-top:1px solid #1a2a3d; margin-top:10px; padding-top:10px">
               <div class="t-medium amber">R$ 5.000</div>
               <div class="t-source">investimento · escopo proporcional</div>
@@ -1268,13 +1253,13 @@
           <div class="vs-center">VS</div>
           <div class="card top-blue flex-col gap-8" style="padding:24px">
             <div class="t-medium blue" style="font-size:14px; margin-bottom:4px">🛡 Novo Projeto — Software</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Aplicação web própria e exclusiva</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Banco de dados relacional próprio — dados são seus</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Aplicação web própria e customizada</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Banco de dados relacional próprio — infra de dados robusta</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Múltiplos usuários com níveis de acesso (admin / operador)</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ APIs governamentais integradas e mantidas</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Análise de risco via API da seguradora</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Trilha de auditoria imutável com timestamp</div>
-            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Infraestrutura cloud com uptime 99,9%</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Possibilidade de intragrar novas APIs</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Trilha de auditoria imutável com data e hora</div>
+            <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Infraestrutura na nuvem com disponibilidade de 99,9%</div>
             <div class="t-sub" style="font-size:14px; color:var(--green-lt)">✓ Monitoramento automático e alertas 24/7</div>
             <div style="border-top:1px solid #1a2a3d; margin-top:10px; padding-top:10px">
               <div class="t-medium blue">Investimento proporcional</div>
@@ -1285,7 +1270,7 @@
       </div>
     </div>
 
-    <!-- SLIDE N5: Os 4 Módulos -->
+    <!-- SLIDE 31: Os 4 Módulos -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:960px; width:100%">
         <div class="chip blue">Os 4 Módulos do Sistema</div>
@@ -1295,7 +1280,7 @@
               <div class="icon-circle blue" style="font-size:14px; font-weight:800;">01</div>
               <div class="t-medium blue" style="font-size:15px">Cadastro de Motoristas</div>
             </div>
-            <div class="t-sub">Onboarding digital completo. OCR automático de CNH e CRLV, reconhecimento facial com prova de vida, histórico permanente e auditável de cada interação. Fraude documental identificada antes de entrar no sistema.</div>
+            <div class="t-sub">Registro digital completo. OCR automático de documentos. Histórico permanente e auditável na criação e atualizações do cadastro.</div>
             <div class="pill" style="align-self:flex-start; font-size:11px">Elimina o risco de identidades fraudulentas</div>
           </div>
           <div class="card blue-border flex-col gap-12">
@@ -1303,7 +1288,7 @@
               <div class="icon-circle blue" style="font-size:14px; font-weight:800;">02</div>
               <div class="t-medium blue" style="font-size:15px">Análise de Conformidade</div>
             </div>
-            <div class="t-sub">Verificação automática de todos os documentos: CNH, CRLV, seguros obrigatórios, RNTRC. Nada opera sem aprovação digital registrada com data e hora. Essa é a evidência que a seguradora exige para honrar a apólice.</div>
+            <div class="t-sub">Verificação automática da conformidade dos documentos de acordo com suas regras. Gera evidências que a seguradora exige para honrar a apólice.</div>
             <div class="pill" style="align-self:flex-start; font-size:11px">Gera a prova de due diligence</div>
           </div>
           <div class="card amber-border flex-col gap-12">
@@ -1311,7 +1296,7 @@
               <div class="icon-circle amber" style="font-size:14px; font-weight:800;">03</div>
               <div class="t-medium amber" style="font-size:15px">Análise de Risco</div>
             </div>
-            <div class="t-sub">Integração direta com a API da seguradora e bases governamentais. Motorista, veículo e proprietário recebem um score de risco antes de qualquer operação sair. Decisão baseada em dado — não em feeling ou confiança.</div>
+            <div class="t-sub">Integração direta com a API da seguradora e outros sistemas. Motorista, veículo e proprietário avaliados antes de qualquer operação sair. Tudo é registrado em sistema e com maior agilidade.</div>
             <div class="pill" style="align-self:flex-start; font-size:11px; background:rgba(212,136,26,0.15); border-color:rgba(212,136,26,0.3); color:var(--amber-lt)">Protege a cobertura securitária</div>
           </div>
           <div class="card green-border flex-col gap-12">
@@ -1319,14 +1304,14 @@
               <div class="icon-circle green" style="font-size:14px; font-weight:800;">04</div>
               <div class="t-medium green" style="font-size:15px">Monitoramento Contínuo</div>
             </div>
-            <div class="t-sub">O sistema não dorme. Alertas automáticos quando qualquer documento está prestes a vencer. O decaimento de compliance deixa de existir. Sua operação nunca mais é pega de surpresa por um RNTRC suspenso ou CNH inválida.</div>
+            <div class="t-sub">O sistema não dorme. Alertas automáticos quando qualquer documento está prestes a vencer. O decaimento de compliance deixa de existir. Sua operação com muito menos surpresas com decaimento de documentos.</div>
             <div class="pill" style="align-self:flex-start; font-size:11px; background:rgba(26,158,94,0.15); border-color:rgba(26,158,94,0.3); color:var(--green-lt)">Elimina o compliance decay</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE N6: O iceberg técnico -->
+    <!-- SLIDE 32: O iceberg técnico -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:900px; width:100%">
         <div class="chip blue">O Que Fica Por Baixo</div>
@@ -1334,30 +1319,28 @@
         <div class="grid-2 anim anim-d2" style="align-items:start">
           <div class="card top-blue flex-col gap-10" style="padding:24px">
             <div class="t-medium blue" style="font-size:14px; margin-bottom:6px">👁 O que o usuário vê</div>
-            <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Dashboard de motoristas e veículos</div>
+            <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Dashboard de motoristas, veículos, proprietários</div>
             <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Alertas automáticos de vencimento</div>
             <div class="highlight-box blue" style="font-size:15px; padding:12px 16px; margin-bottom:8px">Relatório de conformidade da operação</div>
-            <div class="highlight-box blue" style="font-size:15px; padding:12px 16px">Score de risco por motorista e viagem</div>
           </div>
           <div class="card top-amber flex-col gap-8" style="padding:24px">
             <div class="t-medium amber" style="font-size:14px; margin-bottom:6px">⚙️ O que sustenta por baixo</div>
             <div class="t-sub" style="font-size:14px">🔐 Autenticação segura e gestão de sessões</div>
             <div class="t-sub" style="font-size:14px">👥 Hierarquia de permissões (admin / operador / auditor)</div>
             <div class="t-sub" style="font-size:14px">🗄 Banco de dados relacional com integridade referencial</div>
-            <div class="t-sub" style="font-size:14px">🔌 Integração com múltiplas APIs governamentais</div>
-            <div class="t-sub" style="font-size:14px">📋 Trilha de auditoria imutável com timestamp</div>
-            <div class="t-sub" style="font-size:14px">☁️ Infraestrutura cloud com uptime 99,9%</div>
-            <div class="t-sub" style="font-size:14px">🔒 Criptografia e conformidade LGPD</div>
+            <div class="t-sub" style="font-size:14px">🔌 Integração com múltiplas APIs</div>
+            <div class="t-sub" style="font-size:14px">📋 Trilha de auditoria imutável com data e hora</div>
+            <div class="t-sub" style="font-size:14px">☁️ Infraestrutura em nuvem com disponibilidade de 99,9%</div>
             <div class="t-sub" style="font-size:14px">📡 Manutenção contínua quando regulamentações mudam</div>
           </div>
         </div>
         <div class="t-sub center anim anim-d3">
-          Isso não é uma planilha mais sofisticada. É uma <strong class="white">aplicação web com infraestrutura própria</strong>, banco de dados, segurança e responsabilidade de uptime contínua.
+          Isso não é uma planilha mais sofisticada. É uma <strong class="white">aplicação web com infraestrutura própria</strong>, banco de dados, segurança e responsabilidade e disponibilidade contínua.
         </div>
       </div>
     </div>
 
-    <!-- SLIDE N7: O que o mercado cobra -->
+    <!-- SLIDE 33: O que o mercado cobra -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:940px; width:100%">
         <div class="chip amber">Referência de Mercado</div>
@@ -1367,7 +1350,7 @@
             <div class="icon-circle red">🏢</div>
             <div class="t-medium red" style="font-size:14px">Software House</div>
             <div class="t-large red">R$ 200k–500k</div>
-            <div class="t-sub">6 a 12 meses de prazo. Sistema genérico. Sem personalização para OTM. Suporte via ticket.</div>
+            <div class="t-sub">6 a 12 meses de prazo. Lento, cobram por hora. Pouco envolvimento com o negócio. Suporte via ticket.</div>
           </div>
           <div class="card top-amber flex-col gap-10 center">
             <div class="icon-circle amber">👥</div>
@@ -1379,73 +1362,78 @@
             <div class="icon-circle green">🤝</div>
             <div class="t-medium green" style="font-size:14px">Nossa Parceria</div>
             <div class="t-large green">Uma fração</div>
-            <div class="t-sub">Entrega em 2–3 meses. Construído especificamente para a realidade do OTM. Acesso direto à equipe.</div>
+            <div class="t-sub">Entrega em 2–3 meses. Construído especificamente para a realidade do OTM. Acesso direto à equipe que já entende opera na prática junto com vocês diariamente.</div>
           </div>
         </div>
         <div class="card amber-border anim anim-d3" style="padding:20px 28px">
           <div class="t-body" style="text-align:center; font-size:14px">
-            <span class="white bold">Na minha própria empresa</span><span class="gray">, construímos um sistema de gestão interna de complexidade equivalente.</span>
-            <span class="amber bold"> Custou mais de R$ 600.000 e levou 4 meses</span>
+            <span class="white bold">Na minha própria empresa</span><span class="gray">, construímos um sistema de gestão interna de complexidade menor.</span>
+            <span class="amber bold"> Custou mais de R$ 600.000, levou 4 meses e não terminou.</span>
             <span class="gray"> — sem contar overhead de gestão, turnover e infraestrutura. O projeto de vocês vai custar uma fração disso.</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE N8: O Investimento -->
+    <!-- SLIDE 34: O Investimento -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1 center" style="max-width:900px; width:100%; align-items:center">
         <div class="chip green">O Investimento</div>
-        <div class="grid-2 anim anim-d2" style="max-width:800px">
-          <div class="card top-blue flex-col gap-16 center" style="padding:32px 24px">
-            <div class="t-sub gray">Desenvolvimento completo</div>
+        <div class="flex-col gap-12 anim anim-d2" style="max-width:800px; width:100%; align-items:center">
+          <!-- Valor total em destaque -->
+          <div class="card flex-col gap-8 center" style="padding:32px 40px; border:2px solid var(--blue); background:linear-gradient(135deg, rgba(0,163,255,0.08), rgba(0,163,255,0.02)); width:100%">
+            <div class="t-sub gray">Investimento Total no Desenvolvimento</div>
             <div class="t-sub" style="font-size:12px; color:var(--gray-dk)">4 módulos · banco de dados · APIs · infraestrutura</div>
-            <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:16px">
-              <div class="t-sub gray" style="margin-bottom:6px">5 parcelas de</div>
-              <div class="t-huge blue">R$ 10.000</div>
-              <div class="t-sub gray" style="margin-top:8px">= R$ 50.000 total · entrega em 2–3 meses</div>
-            </div>
+            <div class="t-huge blue" style="font-size:56px; margin:8px 0">R$ 50.000</div>
+            <div class="t-sub gray">entrega em 2–3 meses</div>
           </div>
-          <div class="card top-green flex-col gap-16 center" style="padding:32px 24px">
-            <div class="t-sub gray">Manutenção mensal</div>
-            <div class="t-sub" style="font-size:12px; color:var(--gray-dk)">a partir da entrega do sistema</div>
-            <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:16px">
-              <div class="t-sub gray" style="margin-bottom:6px">mensalmente</div>
-              <div class="t-large green">R$ 5.000<span style="font-size:18px; font-weight:400">/mês</span></div>
-              <div class="t-sub gray" style="margin-top:8px">uptime · APIs · atualizações regulatórias</div>
+          <!-- 4 cards informativos -->
+          <div class="grid-2" style="max-width:800px; width:100%">
+            <div class="card flex-col gap-8 center" style="padding:24px 20px">
+              <div class="t-sub white bold">Condição padrão</div>
+              <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:12px">
+                <div class="t-medium blue">50% na entrada</div>
+                <div class="t-medium blue" style="margin-top:4px">50% na entrega</div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="flex-row gap-16 anim anim-d3" style="justify-content:center">
-          <div class="card top-amber flex-col gap-8 center" style="max-width:320px">
-            <div class="t-large amber">1 sinistro</div>
-            <div class="t-sub">sem cobertura já paga<br><span style="font-size:11px; color:var(--gray-dk)">todo o desenvolvimento</span></div>
+            <div class="card flex-col gap-8 center" style="padding:24px 20px">
+              <div class="t-sub white bold">Precisa de mais parcelas?</div>
+              <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:12px">
+                <div class="t-sub gray">Podemos negociar um<br>parcelamento que funcione para você.</div>
+              </div>
+            </div>
+            <div class="card flex-col gap-8 center" style="padding:24px 20px">
+              <div class="t-sub white bold">Manutenção mensal</div>
+              <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:12px">
+                <div class="t-large green">R$ 5.000<span style="font-size:18px; font-weight:400">/mês</span></div>
+                <div class="t-sub gray" style="margin-top:6px">Monitoramento e pequenas melhorias</div>
+              </div>
+            </div>
+            <div class="card flex-col gap-8 center" style="padding:24px 20px">
+              <div class="t-sub white bold">Perspectiva</div>
+              <div style="border-top:1px solid #1a2a3d; width:100%; padding-top:12px">
+                <div class="t-medium amber">1 sinistro</div>
+                <div class="t-sub gray" style="margin-top:4px">sem cobertura já paga<br>todo o desenvolvimento</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE N9: O que está incluso na manutenção -->
+    <!-- SLIDE 35: O que está incluso na manutenção -->
     <div class="slide" data-chapter="O Sistema para Você">
       <div class="flex-col gap-20 anim anim-d1" style="max-width:900px; width:100%">
         <div class="chip green">R$ 5.000/mês — O Que Está Incluso</div>
         <div class="t-sub center anim anim-d1">Isso não é uma assinatura de software genérico.<br>É a garantia de que o sistema vai <span class="white bold">continuar funcionando e protegendo</span> a sua operação.</div>
-        <div class="grid-3 anim anim-d2" style="gap:14px">
+        <div class="grid-2 anim anim-d2" style="gap:14px">
           <div class="card green-border flex-col gap-8">
             <div class="t-medium green" style="font-size:13px">☁️ Infraestrutura e Uptime</div>
             <div class="t-sub">Servidores cloud, monitoramento 24/7 e backups automáticos. Se o sistema cair, é problema nosso — não seu.</div>
           </div>
           <div class="card green-border flex-col gap-8">
-            <div class="t-medium green" style="font-size:13px">🔌 APIs Governamentais</div>
-            <div class="t-sub">SERPRO, SENATRAN e SINESP mudam sem avisar. Mantemos as integrações funcionando independente de qualquer alteração.</div>
-          </div>
-          <div class="card green-border flex-col gap-8">
-            <div class="t-medium green" style="font-size:13px">⚖️ Atualizações Regulatórias</div>
-            <div class="t-sub">Quando a ANTT ou o MTE mudam regras, o sistema adapta. Você não precisa acompanhar — nós acompanhamos por você.</div>
-          </div>
-          <div class="card green-border flex-col gap-8">
-            <div class="t-medium green" style="font-size:13px">🔒 Segurança e LGPD</div>
-            <div class="t-sub">Patches de segurança, atualizações de bibliotecas, conformidade com LGPD para dados sensíveis de motoristas. Sempre em dia.</div>
+            <div class="t-medium green" style="font-size:13px">🔌 Monitoramento de APIs</div>
+            <div class="t-sub">APIs mudam sem avisar. Mantemos as integrações funcionando independente de qualquer alteração.</div>
           </div>
           <div class="card green-border flex-col gap-8">
             <div class="t-medium green" style="font-size:13px">🛠 Correções e Melhorias</div>
@@ -1455,9 +1443,6 @@
             <div class="t-medium green" style="font-size:13px">📞 Suporte Direto</div>
             <div class="t-sub">Acesso direto a quem construiu o sistema. Sem ticket de suporte. Sem fila de atendimento. Quando precisa, a resposta chega.</div>
           </div>
-        </div>
-        <div class="highlight-box amber anim anim-d3" style="font-size:13px">
-          Se a manutenção for pausada, o sistema continua rodando — mas as APIs param de ser mantidas, as atualizações regulatórias não chegam e o uptime passa a ser responsabilidade de vocês. <strong>O risco volta.</strong>
         </div>
       </div>
     </div>
